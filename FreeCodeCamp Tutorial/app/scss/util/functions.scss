@@ -1,0 +1,8 @@
+@use "sass:math";
+
+// Source: https://css-tricks.com/snippets/sass/px-to-em-functions/
+@function rem($pixels, $context: 16) {
+	@return (math.div($pixels, $context)) * 1rem;
+}
+
+//Use rem as you can scale all of the text in a document by just adjusting the root font size.

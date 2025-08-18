@@ -4,7 +4,7 @@
 -> https://dev.to/ananyaneogi/create-a-dark-light-mode-switch-with-css-variables-34l8 
 -> https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme  
 
--HTML Markup?
+- HTML Markup?
 ->https://github.com/scottaohara/a11y_styled_form_controls
 
 - Use fieldset, legend, radio inputs

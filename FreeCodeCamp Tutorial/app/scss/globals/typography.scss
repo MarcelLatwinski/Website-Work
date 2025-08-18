@@ -1,0 +1,11 @@
+h1,
+h2,
+h3 {
+  margin-top: 0;
+}
+
+a, //Links
+a:visited, //Links the user has clicked
+a:active { //Links currently being clicked (mouse down)
+  text-decoration: none; //Removes underline
+}

@@ -1,0 +1,16 @@
+html {
+  font-size: 100%;
+  box-sizing: border-box; //Total width of object includes padding, not be an addition
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit; //Before and After pseudoelements (children) fit within the border-box of the initial element
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-inter);
+}
