@@ -1,0 +1,65 @@
+// Initialize modules
+const { src, dest, watch, series } = require('gulp');
+const sass = require('gulp-sass')(require('sass')); //Compiles SCSS files to CSS
+const postcss = require('gulp-postcss'); //Lets me run CSS Transformations 
+const autoprefixer = require('autoprefixer'); // Adds vendor prefices to css for cross-browser support - don't need to add -webkit and -ms
+const cssnano = require('cssnano'); //Minifies CSS to reduce file size
+const babel = require('gulp-babel'); //Allows me to use modern JS features like let and const on older browsers by transpiling (rewrtiing?)
+const terser = require('gulp-terser'); //Minifies js file
+const browsersync = require('browser-sync').create(); //Creates live-reloading development server
+
+//Minifies - removing all unnecessary characters from code without changing it like removing spaces, newlines and comments or shortening variable names
+
+// Use dart-sass for @use and @forward rather than node-sass
+sass.compiler = require('dart-sass');
+
+// Sass Task
+function scssTask() {
+  return src('app/scss/style.scss', { sourcemaps: true })
+    .pipe(sass())
+    .pipe(postcss([autoprefixer(), cssnano()]))
+    .pipe(dest('dist', { sourcemaps: '.' }));
+}
+
+// JavaScript Task
+function jsTask() {
+  return src('app/js/script.js', { sourcemaps: true })
+    .pipe(babel({ presets: ['@babel/preset-env'] }))
+    .pipe(terser())
+    .pipe(dest('dist', { sourcemaps: '.' }));
+}
+
+// Browsersync
+function browserSyncServe(cb) {
+  browsersync.init({
+    server: {
+      baseDir: '.',
+    },
+    notify: {
+      styles: {
+        top: 'auto',
+        bottom: '0',
+      },
+    },
+  });
+  cb();
+}
+function browserSyncReload(cb) {
+  browsersync.reload();
+  cb();
+}
+
+// Watch Task
+function watchTask() {
+  watch('*.html', browserSyncReload);
+  watch(
+    ['app/scss/**/*.scss', 'app/**/*.js'],
+    series(scssTask, jsTask, browserSyncReload)
+  );
+}
+
+// Default Gulp Task
+exports.default = series(scssTask, jsTask, browserSyncServe, watchTask);
+
+// Build Gulp Task
+exports.build = series(scssTask, jsTask);
