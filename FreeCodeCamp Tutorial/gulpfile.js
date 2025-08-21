@@ -11,7 +11,7 @@ const browsersync = require('browser-sync').create(); //Creates live-reloading d
 //Minifies - removing all unnecessary characters from code without changing it like removing spaces, newlines and comments or shortening variable names
 
 // Use dart-sass for @use and @forward rather than node-sass
-sass.compiler = require('dart-sass');
+//sass.compiler = require('dart-sass');
 
 // Sass Task
 function scssTask() {
@@ -44,22 +44,19 @@ function browserSyncServe(cb) {
   });
   cb();
 }
-function browserSyncReload(cb) {
+function browserSyncReload(cb) { //Just Reloads the Browser
   browsersync.reload();
   cb();
 }
 
 // Watch Task
 function watchTask() {
-  watch('*.html', browserSyncReload);
+  watch('*.html', browserSyncReload); //Watches html browser, if theres a change it runs the reload func
   watch(
     ['app/scss/**/*.scss', 'app/**/*.js'],
-    series(scssTask, jsTask, browserSyncReload)
+    series(scssTask, jsTask, browserSyncReload) //Same for sass and js
   );
 }
 
 // Default Gulp Task
 exports.default = series(scssTask, jsTask, browserSyncServe, watchTask);
-
-// Build Gulp Task
-exports.build = series(scssTask, jsTask);

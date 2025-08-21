@@ -1,4 +1,4 @@
-@use "../util" as *;
+@use "../util" as *; //imports the index file inside util folder to be used. "as *" means it pulls all the variables, mixins and functions into the current files scope directly
 
 .card {
     padding: rem(20);
