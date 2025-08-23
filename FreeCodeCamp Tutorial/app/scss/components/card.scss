@@ -1,5 +1,46 @@
 @use "../util" as *; //imports the index file inside util folder to be used. "as *" means it pulls all the variables, mixins and functions into the current files scope directly
 
-.card {
-    padding: rem(20);
+.card { //BEM - BLOCK (e.g. card) ELEMENT (e.g. icon, platform, count) MODIFIER (e.g. facebook, twitter)
+
+    &__icon{
+
+        &--facebook{
+
+        }
+        &--twitter{
+            
+        }
+        &--instagram{
+            
+        }
+        &--youtube{
+            
+        }
+    }
+
+    &__username{
+
+    }
+
+    &__count{
+        &--big{
+
+        }
+        &--small{
+
+        }
+    }
+
+    &__label{
+
+    }
+
+    &__change{
+        &--up{
+
+        }
+        &--down{
+            
+        }
+    }
 }
