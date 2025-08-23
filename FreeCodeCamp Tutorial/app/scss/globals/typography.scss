@@ -1,3 +1,6 @@
+@use "../util" as *;
+
+
 h1,
 h2,
 h3 {
@@ -8,4 +11,11 @@ a, //Links
 a:visited, //Links the user has clicked
 a:active { //Links currently being clicked (mouse down)
   text-decoration: none; //Removes underline
+}
+
+h1{
+  font-size: rem(24);
+  @include breakpoint(large){
+    font-size: rem(28);
+  }
 }
