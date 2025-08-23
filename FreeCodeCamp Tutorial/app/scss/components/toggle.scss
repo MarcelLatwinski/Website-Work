@@ -1,25 +1,79 @@
 @use "../util" as *;
 
 .toggle {
+    display: grid;
+    grid-template-columns: 1fr rem(60) 1fr;
+    grid-template-rows: repeat(2, 1fr);
     border: none;
+    gap: rem(12);
 
-    &__wrapper {
+    label {
+        &[for="dark"]{
+            grid-column: 1 / 2;
+            justify-self: end;
+        }
+        &[for="system"]{
+            grid-column: 1 / 4;
+            grid-row: 2 / 3;
+            justify-self: center;
+        }
+        &[for="light"]{
+            grid-column: 3 / 4
+        }        
     }
 
-    input[type="radio"]{
+    &__wrapper {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+        height: rem(24);
+        position: relative;
+    }
+
+    input[type="radio"]{ //Dont want to do display: none as not navigatable by keyboard, use opacity: 0
+        margin: 0 rem(-2) 0 rem(-2);
+        opacity: 0;
+        height: rem(24);
+        width: rem(20);
     }
 
     &__background{
-      
+        display: block;
+        background: linear-gradient(
+            225deg,
+            var(--toggle-bg-end) 0%,
+            var(--toggle-bg-start) 98.02%
+        );
+        height: 100%;
+        border-radius: rem(12);
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        pointer-events: none;
     }
 
     &__button {
-        width: rem(16);
-        height: rem(16);
+        position: absolute;
+        left: rem(3);
+        top: rem(3);
+        right: 100%;
+
+        width: rem(18);
+        height: rem(18);
         border-radius: 50%;
-        background-color: var(--toggle);
+        background-color: var(--dark-bg);
+        transition: all 150ms ease-in-out;
     }
 
-    label {
+    #light:checked ~ .toggle__button {
+        left: calc(100% - 21px);
+        right: 3px;
     }
+
+    #system:checked ~ .toggle__button {
+        left: 50%;
+        right: auto;
+        transform: translate(-50%);
+    }
+
 }
