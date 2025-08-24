@@ -1,9 +1,50 @@
 @use "../util" as *; //imports the index file inside util folder to be used. "as *" means it pulls all the variables, mixins and functions into the current files scope directly
 
+.cards{
+    display: flex; //Children elements align along main axis (row by default)
+    flex-direction: column; //change main axis of flex
+    flex-wrap: wrap; //Items will wrap around if there are too many items and so no space available along main axis
+    gap: rem(30);
+
+
+    @include breakpoint(medium) {
+        flex-direction: row;
+    }
+}
+
 .card { //BEM - BLOCK (e.g. card) ELEMENT (e.g. icon, platform, count) MODIFIER (e.g. facebook, twitter)
 
-    &__icon{
+    background: var(--dark-card);
+    color: var(--dark-text1);
+    text-align: center;
+    padding: rem(25);
+    border-radius: rem(5);
+    flex: 1;  // Each card will divide ratio of container evenly - shorthand for grow, shrink and basis
+    flex-basis: 50%;
+    flex-grow: 0;
 
+    &--facebook{
+        border-top: rem(5) solid var(--facebook);
+    }
+    &--twitter{
+        
+    }
+    &--instagram{
+        
+    }
+    &--youtube{
+        
+    }
+    
+    &__platform{
+        display: flex;
+        justify-content: center; //how to align items along main axis of container in flex
+        align-items: center; //align items across cross axis (not main)
+        margin-bottom: rem(28);
+    }
+
+    &__icon{
+        margin-right: rem(8);
         &--facebook{
 
         }
@@ -19,12 +60,22 @@
     }
 
     &__username{
+        font-size: rem(12);
+        font-weight: 700;
+    }
 
+    &__followers{
+        margin-bottom: rem(25);
     }
 
     &__count{
+        font-weight: 700;
+        color: var(--light-bg);
+        letter-spacing: rem(-2);
+        line-height: 1;
+        margin-bottom: rem(4);
         &--big{
-
+            font-size: rem(56);
         }
         &--small{
 
@@ -32,15 +83,31 @@
     }
 
     &__label{
-
+        font-size: rem(12);
+        color: var(--dark-text1);
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: rem(5);
     }
 
     &__change{
+        font-size: rem(12);
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         &--up{
-
+            color: var(--limegreen);
         }
         &--down{
-            
+            color: var(--brightred);
         }
+
+        img{
+            margin-right: rem(4);
+        }
+    }
+
+    &__number{
     }
 }
