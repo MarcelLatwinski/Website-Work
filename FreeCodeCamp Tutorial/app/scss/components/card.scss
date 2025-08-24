@@ -21,8 +21,8 @@
 
 .card { //BEM - BLOCK (e.g. card) ELEMENT (e.g. icon, platform, count) MODIFIER (e.g. facebook, twitter)
 
-    background: var(--dark-card);
-    color: var(--dark-text1);
+    background: var(--card-bg);
+    color: var(--text-color2);
     text-align: center;
     padding: rem(25);
     border-radius: rem(5);
@@ -31,7 +31,7 @@
     transition: background 150ms ease-in-out;
 
     &:hover{
-        background: var(--dark-card-hover);
+        background: var(--card-hover);
         cursor: pointer;
     }
 
@@ -92,7 +92,7 @@
 
     &__count{
         font-weight: 700;
-        color: var(--light-bg);
+        color: var(--text-color);
         letter-spacing: rem(-2);
         line-height: 1;
         margin-bottom: rem(4);
@@ -106,7 +106,7 @@
 
     &__label{
         font-size: rem(12);
-        color: var(--dark-text1);
+        color: var(--text-color2);
         font-weight: 400;
         text-transform: uppercase;
         letter-spacing: rem(5);
