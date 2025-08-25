@@ -1,0 +1,45 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 50px;
+}
+
+.container {
+  display: inline-block;
+  padding: 30px;
+  border-radius: 15px;
+  background: #222;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+#counter {
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffcc00;
+}
+
+#channel-name {
+  margin-top: 15px;
+  font-size: 20px;
+  color: #aaa;
+}
+
+#video-views{
+    font-size: 48px;
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+#video-likes{
+    font-size: 48px;
+    font-weight: bold;
+    color: #ffcc00;
+}

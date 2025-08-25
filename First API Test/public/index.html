@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Live Subscriber Counter</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Odometer CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/themes/odometer-theme-default.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>YouTube Live Subscriber Counter</h1>
+    <div id="counter" class="odometer">0</div>
+    <p id="channel-name">BBC Maestro</p>
+
+    <h2>Most Recent Video</h2>
+    <p id="video-title">Loading...</p>
+    <div>Views: <span id="video-views" class="odometer">0</span></div>
+    <div>Likes: <span id="video-likes" class="odometer">0</span></div>
+  </div>
+
+  <!-- Odometer JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
