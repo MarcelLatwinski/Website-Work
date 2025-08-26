@@ -56,5 +56,23 @@ app.get('/latest-video', async (req, res) => {
   }
 });
 
+// ==== API ROUTE: Facebook Page followers ====
+app.get('/fb-followers', async (req, res) => {
+  try {
+    const url = `https://graph.facebook.com/v23.0/${process.env.FB_PAGE_ID}?fields=followers_count&access_token=${process.env.FB_PAGE_TOKEN}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+
+    res.json({ followersCount: data.followers_count });
+  } catch (error) {
+    console.error(error);
+    res.json({ error: 'Failed to fetch Facebook followers' });
+  }
+});
+
 // Start server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
