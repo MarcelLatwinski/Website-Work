@@ -74,5 +74,23 @@ app.get('/fb-followers', async (req, res) => {
   }
 });
 
+app.get('/ig-followers', async (req, res) => {
+  try {
+    const url = `https://graph.facebook.com/v23.0/${process.env.IG_USER_ID}?fields=followers_count&access_token=${process.env.IG_ACCESS_TOKEN}`;
+    
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+
+    res.json({ followersCount: data.followers_count });
+  } catch (error) {
+    console.error(error);
+    res.json({ error: 'Failed to fetch Instagram followers' });
+  }
+});
+
 // Start server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

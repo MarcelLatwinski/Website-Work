@@ -13,6 +13,7 @@ body {
   border-radius: 15px;
   background: #222;
   box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  padding-bottom: 24px;
 }
 
 h1 {
