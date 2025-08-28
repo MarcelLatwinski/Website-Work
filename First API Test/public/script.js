@@ -38,14 +38,29 @@ async function getInstagramFollowers() {
   }
 }
 
+async function getTikTokFollowers() {
+  try {
+    const response = await fetch('/tiktok-followers');
+    const data = await response.json();
 
+    if (!data.error) {
+      document.getElementById("tiktok-counter").innerHTML = data.followersCount;
+    } else {
+      console.error(data.error);
+    }
+  } catch (err) {
+    console.error('Failed to fetch TikTok followers:', err);
+  }
+}
 
 getFacebookFollowers();
 getSubscriberCount();
 getLatestVideoStats();
 getInstagramFollowers();
+getTikTokFollowers();
 
 setInterval(getSubscriberCount, 30000);
 setInterval(getLatestVideoStats, 30000);
 setInterval(getFacebookFollowers, 30000);
 setInterval(getInstagramFollowers, 30000);
+setInterval(getTikTokFollowers, 30000);

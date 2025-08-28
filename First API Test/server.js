@@ -76,7 +76,7 @@ app.get('/fb-followers', async (req, res) => {
 
 app.get('/ig-followers', async (req, res) => {
   try {
-    const url = `https://graph.facebook.com/v23.0/${process.env.IG_USER_ID}?fields=followers_count&access_token=${process.env.IG_ACCESS_TOKEN}`;
+    const url = `https://graph.instagram.com/v23.0/${process.env.IG_USER_ID}?fields=followers_count&access_token=${process.env.IG_ACCESS_TOKEN}`;
     
     const response = await fetch(url);
     const data = await response.json();
@@ -92,5 +92,46 @@ app.get('/ig-followers', async (req, res) => {
   }
 });
 
+// ==== API ROUTE: TikTok followers ====
+app.get('/tiktok-followers', async (req, res) => {
+  try {
+    const accessToken = process.env.TIKTOK_ACCESS_TOKEN;
+    const openId = process.env.TIKTOK_OPENID;
+
+    if (!accessToken || !openId) {
+      throw new Error('Missing TikTok access token or OpenID');
+    }
+
+    // Make request to TikTok API with proper scope
+    const url = `https://open.tiktokapis.com/v2/user/info/?open_id=${openId}&fields=follower_count`;
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+    console.log('TikTok API response:', data);
+
+    if (data.error && data.error.code !== 'ok') {
+      throw new Error(data.error.message || 'TikTok API returned an error');
+    }
+
+    const followersCount = data.data?.user?.follower_count ?? null;
+    if (followersCount === null) {
+      throw new Error('Follower count not available — make sure the token has user.info.stats scope');
+    }
+
+    res.json({ followersCount });
+
+  } catch (error) {
+    console.error('Error fetching TikTok followers:', error);
+    res.json({ error: error.message });
+  }
+});
+
+
 // Start server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
