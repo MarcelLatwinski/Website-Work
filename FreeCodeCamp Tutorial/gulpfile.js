@@ -32,18 +32,15 @@ function jsTask() {
 // Browsersync
 function browserSyncServe(cb) {
   browsersync.init({
-    server: {
-      baseDir: '.',
-    },
+    proxy: "http://localhost:3000", // proxy Express server
+    port: 4000, // Browsersync runs on a different port
     notify: {
-      styles: {
-        top: 'auto',
-        bottom: '0',
-      },
+      styles: { top: 'auto', bottom: '0' },
     },
   });
   cb();
 }
+
 function browserSyncReload(cb) { //Just Reloads the Browser
   browsersync.reload();
   cb();

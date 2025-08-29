@@ -13,53 +13,64 @@ const CHANNEL_ID = 'UCIIcUq-DNRXGoADi8slTSyg';
 // Serve static files in "public" folder
 app.use(express.static('public')); //static files (HTML, CSS, JS) from public folder will be returned when visiting http://localhost:3000/index.html
 
-// ==== API ROUTE: Subscriber count ====
-app.get('/subscribers', async (req, res) => { //Defines a GET route at /subscribers to use at the front end. async allows us to use await for async operations like fetching
+// ==== YOUTUBE API ROUTE: Combined stats ====
+app.get('/youtube-stats', async (req, res) => {
   try {
-    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
-    const response = await fetch(url);
-    const data = await response.json();
+    // 1️⃣ Get channel info
+    const channelUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
+    const channelResponse = await fetch(channelUrl);
+    const channelData = await channelResponse.json();
+    const channel = channelData.items[0];
 
-    const subscriberCount = data.items[0].statistics.subscriberCount;
-    res.json({ subscriberCount });
-  } catch (error) {
-    console.error(error);
-    res.json({ error: 'Failed to fetch subscriber count' });
-  }
-});
+    const channelName = channel.snippet.title;
+    const subscriberCount = channel.statistics.subscriberCount;
+    const totalViews = channel.statistics.viewCount;
+    const videoCount = channel.statistics.videoCount;
 
-// ==== API ROUTE: Latest video stats ====
-app.get('/latest-video', async (req, res) => {
-  try {
-    // 1️⃣ Get latest video
+    // 2️⃣ Get latest video info
     const searchUrl = `https://www.googleapis.com/youtube/v3/search?channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=1&type=video&key=${API_KEY}`;
     const searchResponse = await fetch(searchUrl);
     const searchData = await searchResponse.json();
-    const video = searchData.items[0];
-    const videoId = video.id.videoId;
-    const videoTitle = video.snippet.title;
+    const latestVideo = searchData.items[0];
+    const videoId = latestVideo.id.videoId;
+    const videoTitle = latestVideo.snippet.title;
 
-    // 2️⃣ Get video stats
+    // 3️⃣ Get latest video stats
     const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${API_KEY}`;
     const statsResponse = await fetch(statsUrl);
     const statsData = await statsResponse.json();
-    const stats = statsData.items[0].statistics;
+    const videoStats = statsData.items[0].statistics;
 
-    res.json({
-      videoTitle,
-      viewCount: stats.viewCount,
-      likeCount: stats.likeCount
-    });
-  } catch (error) {
-    console.error(error);
-    res.json({ error: 'Failed to fetch latest video stats' });
-  }
+    const result = {
+      channel: {
+        channelName,
+        subscriberCount,
+        totalViews,
+        videoCount
+      },
+      latestVideo: {
+        videoId,
+        videoTitle,
+        viewCount: videoStats.viewCount,
+        likeCount: videoStats.likeCount
+      }
+    };
+
+    // 👇 log it to your Node.js console in pretty JSON format
+    //console.log("YouTube stats:", JSON.stringify(result, null, 2));
+
+    res.json(result);
+    } catch (error) {
+      console.error(error);
+      res.json({ error: 'Failed to fetch YouTube stats' });
+    }
 });
+
 
 // ==== API ROUTE: Facebook Page followers ====
 app.get('/fb-followers', async (req, res) => {
   try {
-    const url = `https://graph.facebook.com/v23.0/${process.env.FB_PAGE_ID}?fields=followers_count&access_token=${process.env.FB_PAGE_TOKEN}`;
+    const url = `https://graph.facebook.com/v23.0/${process.env.FB_PAGE_ID}?fields=followers_count,fan_count,name&access_token=${process.env.FB_PAGE_TOKEN}`;
     const response = await fetch(url);
     const data = await response.json();
 
@@ -67,7 +78,15 @@ app.get('/fb-followers', async (req, res) => {
       throw new Error(data.error.message);
     }
 
-    res.json({ followersCount: data.followers_count });
+    const result = (
+       {followersCount: data.followers_count,
+        likeCount: data.fan_count,
+        FBusername: data.name
+     });
+
+    console.log("Facebook stats:", JSON.stringify(result, null, 2));
+    res.json(result);
+
   } catch (error) {
     console.error(error);
     res.json({ error: 'Failed to fetch Facebook followers' });
@@ -76,7 +95,7 @@ app.get('/fb-followers', async (req, res) => {
 
 app.get('/ig-followers', async (req, res) => {
   try {
-    const url = `https://graph.instagram.com/v23.0/${process.env.IG_USER_ID}?fields=followers_count&access_token=${process.env.IG_ACCESS_TOKEN}`;
+    const url = `https://graph.instagram.com/v23.0/${process.env.IG_USER_ID}?fields=followers_count,username&access_token=${process.env.IG_ACCESS_TOKEN}`;
     
     const response = await fetch(url);
     const data = await response.json();
@@ -85,7 +104,16 @@ app.get('/ig-followers', async (req, res) => {
       throw new Error(data.error.message);
     }
 
-    res.json({ followersCount: data.followers_count });
+    const result = (
+       {followersCount: data.followers_count,
+        likeCount: null,
+        IGusername: data.username,
+        viewCount: null
+     });
+
+    console.log("Instagram stats:", JSON.stringify(result, null, 2));
+    res.json(result);
+
   } catch (error) {
     console.error(error);
     res.json({ error: 'Failed to fetch Instagram followers' });
@@ -102,8 +130,8 @@ app.get('/tiktok-followers', async (req, res) => {
       throw new Error('Missing TikTok access token or OpenID');
     }
 
-    // Make request to TikTok API with proper scope
-    const url = `https://open.tiktokapis.com/v2/user/info/?open_id=${openId}&fields=follower_count`;
+    // ✅ Updated URL with open_id and fields
+    const url = `https://open.tiktokapis.com/v2/user/info/?open_id=${openId}&fields=follower_count,likes_count,display_name`;
     const response = await fetch(url, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
@@ -118,19 +146,22 @@ app.get('/tiktok-followers', async (req, res) => {
       throw new Error(data.error.message || 'TikTok API returned an error');
     }
 
-    const followersCount = data.data?.user?.follower_count ?? null;
-    if (followersCount === null) {
-      throw new Error('Follower count not available — make sure the token has user.info.stats scope');
+    const user = data.data?.user ?? null;
+    if (!user) {
+      throw new Error('User info not available — make sure the token has user.info.basic and user.info.stats scope');
     }
 
-    res.json({ followersCount });
+    res.json({
+      username: user.display_name ?? null,
+      followersCount: user.follower_count ?? null,
+      likesCount: user.likes_count ?? null
+    });
 
   } catch (error) {
     console.error('Error fetching TikTok followers:', error);
     res.json({ error: error.message });
   }
 });
-
 
 // Start server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
