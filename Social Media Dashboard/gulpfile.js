@@ -7,6 +7,7 @@ const cssnano = require('cssnano'); //Minifies CSS to reduce file size
 const babel = require('gulp-babel'); //Allows me to use modern JS features like let and const on older browsers by transpiling (rewrtiing?)
 const terser = require('gulp-terser'); //Minifies js file
 const browsersync = require('browser-sync').create(); //Creates live-reloading development server
+const esbuild = require('gulp-esbuild');
 
 //Minifies - removing all unnecessary characters from code without changing it like removing spaces, newlines and comments or shortening variable names
 
@@ -23,15 +24,16 @@ function scssTask() {
 
 // JavaScript Task
 function jsTask() {
-  return src('app/js/**/*.js', { sourcemaps: true })
-    .pipe(babel({
-      presets: ['@babel/preset-env'],
-      plugins: ['@babel/plugin-transform-modules-iife'] // converts import/export to IIFE for browsers
+  return src('app/js/script.js') // main entry file
+    .pipe(esbuild({
+      outfile: 'script.js', // output file in dist
+      bundle: true,         // combine all imports
+      minify: true,         // minify
+      sourcemap: true,
+      target: ['es2015'],   // transpile to ES5
     }))
-    .pipe(terser()) // minify
-    .pipe(dest('dist', { sourcemaps: '.' }));
+    .pipe(dest('dist'));
 }
-
 
 // Browsersync
 function browserSyncServe(cb) {
