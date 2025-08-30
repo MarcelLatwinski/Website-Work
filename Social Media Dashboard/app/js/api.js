@@ -64,7 +64,7 @@ async function getTikTokFollowers() {
     if (!data.error) {
       document.getElementById("tiktok-followers").innerHTML = data.followersCount;
       document.getElementById("tiktok-username").innerHTML = data.username;
-      document.getElementById("tiktok-totalikes").innerHTML = data.likesCount;
+      document.getElementById("tiktok-totallikes").innerHTML = data.likesCount;
     } else {
       console.error(data.error);
     }
