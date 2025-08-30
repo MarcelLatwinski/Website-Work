@@ -25,6 +25,7 @@ app.get('/youtube-stats', async (req, res) => {
     const channelUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
     const channelResponse = await fetch(channelUrl);
     const channelData = await channelResponse.json();
+    console.log("YouTube API response:", channelData);
     const channel = channelData.items[0];
 
     const channelName = channel.snippet.title;
@@ -62,7 +63,7 @@ app.get('/youtube-stats', async (req, res) => {
     };
 
     // 👇 log it to your Node.js console in pretty JSON format
-    //console.log("YouTube stats:", JSON.stringify(result, null, 2));
+    console.log("YouTube stats:", JSON.stringify(result, null, 2));
 
     res.json(result);
     } catch (error) {
