@@ -2,6 +2,10 @@
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { MainScene } from "./mainScene";
+import { Sky } from "./sceneSky";
+import { ScrollContainer } from "./scrollContainer";
+import { useScroll, MotionPathControls, useMotion } from "@react-three/drei";
+
 
 export function MainCanvas() {
 
@@ -14,8 +18,8 @@ export function MainCanvas() {
                 camera={{ fov: 55, position: [0,0,6] }}
             >
                 <Environment files="/images/runway.jpg" />
-                <MainScene />
-
+                <ScrollContainer />
+                <Sky />
             </Canvas>
         </div> 
     );

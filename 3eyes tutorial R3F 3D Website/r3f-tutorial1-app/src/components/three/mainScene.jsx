@@ -1,64 +1,37 @@
-
-import { useRef } from "react"
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useScroll, MotionPathControls, useMotion } from "@react-three/drei";
+import * as THREE from "three";
 
 export function MainScene() {
-  // Canvas element of react3five responds to the size of its parents div
-  const can1Ref = useRef()
-  const can1SpinRef = useRef()
-  const initialPosition = [0,0,0]
-  const initialRotation = [0,0,0]
-  
-  useGSAP(() => {
-    const timeline = gsap.timeline({
-        scrollTrigger: {
-            trigger: "body",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: true,
-            markers: true,
-        }
-    })
+  const boxRef = useRef();
+  const scroll = useScroll();
+  const motion = useMotion();
 
-    timeline
-        .to(can1Ref.current.position, {
-            x: 0.5,
-            y: 0,
-            z: 3
-        })
-        .to(can1Ref.current.position, {
-            x: 0,
-            y: 0,
-            z: 0
-        })
-        .to(can1Ref.current.rotation, {
-            x: Math.PI/4
-        }, 0.5)
-        .to(can1Ref.current.rotation, {
-            x: 0,
-            ease: "power2.out"
-        }, 1.5)
-        .to(can1SpinRef.current.rotation, {
-            y: Math.PI/4
-        }, 0)       
-        .to(can1SpinRef.current.rotation, {
-            y: 0
-        })   
-  })
+  const { straightLine } = useMemo(() => {
+    const start = new THREE.Vector3(0, -2, 0);
+    const end = new THREE.Vector3(0, 2, 0);
+    const straightLine = new THREE.CatmullRomCurve3([start, end], false);
+
+    return { straightLine };
+  }, []);
+
+  useFrame((state, delta) => {
+    //console.log(scroll.offset)
+  });
 
   return (
     <>
-      <group ref={can1Ref} position = {initialPosition} rotation = {initialRotation}>
-        <group ref={can1SpinRef}>
-          <mesh>
-            <cylinderGeometry args={[1, 1, 2, 8, 8]} />
-            <meshStandardMaterial color="red" />
-          </mesh>
-        </group>
+      <MotionPathControls
+        curves={[straightLine]}
+        object={boxRef}
+        debug={true}
+      ></MotionPathControls>
+      <group ref={boxRef}>
+        <mesh>
+          <boxGeometry args={[1, 1, 1]} />
+          <meshStandardMaterial color="red" />
+        </mesh>
       </group>
     </>
   );
