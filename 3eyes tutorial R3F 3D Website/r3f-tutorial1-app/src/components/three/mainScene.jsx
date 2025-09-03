@@ -1,38 +1,40 @@
-import { useRef, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
-import { useScroll, MotionPathControls, useMotion } from "@react-three/drei";
-import * as THREE from "three";
+import * as THREE from 'three'
+import { Canvas } from '@react-three/fiber'
+import { ScrollControls, MotionPathControls } from '@react-three/drei'
+import { useMemo } from 'react'
 
 export function MainScene() {
-  const boxRef = useRef();
-  const scroll = useScroll();
-  const motion = useMotion();
-
-  const { straightLine } = useMemo(() => {
-    const start = new THREE.Vector3(0, -2, 0);
-    const end = new THREE.Vector3(0, 2, 0);
-    const straightLine = new THREE.CatmullRomCurve3([start, end], false);
-
-    return { straightLine };
-  }, []);
-
-  useFrame((state, delta) => {
-    //console.log(scroll.offset)
-  });
+  // ✅ define curve properly
+  const curve = useMemo(() => {
+    return new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(5, 2, -5),
+      new THREE.Vector3(10, 0, -10),
+      new THREE.Vector3(15, -2, -15),
+    ])
+  }, [])
 
   return (
     <>
-      <MotionPathControls
-        curves={[straightLine]}
-        object={boxRef}
-        debug={true}
-      ></MotionPathControls>
-      <group ref={boxRef}>
-        <mesh>
-          <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color="red" />
-        </mesh>
-      </group>
+      {/* Wrap content with ScrollControls */}
+      <ScrollControls pages={3}>
+        {/* ✅ MotionPathControls expects an array of curves */}
+        <MotionPathControls curves={[curve]}>
+          <mesh>
+            <sphereGeometry args={[0.5, 32, 32]} />
+            <meshStandardMaterial color="orange" />
+          </mesh>
+        </MotionPathControls>
+      </ScrollControls>
     </>
-  );
+  )
+}
+
+export default function App() {
+  return (
+    <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
+      <ambientLight />
+      <MainScene />
+    </Canvas>
+  )
 }
