@@ -4,6 +4,7 @@ import Hero from "./sections/Hero"
 import About from "./sections/About";
 import Projects from "./sections/Projects";
 import Experiences from "./sections/Experiences";
+import Testimonial from "./sections/Testimonial";
 
 const App = () => { //Defines a function component - reusable building block of UI - written as an arrow function - modern shorthand for writing functions in javascript
   return (
@@ -13,10 +14,8 @@ const App = () => { //Defines a function component - reusable building block of 
     <About />
     <Projects />
     <Experiences />
+    <Testimonial />
     <section className="min-h-screen" />
-    <section className="min-h-screen" />
-    <section className="min-h-screen" />
-    {/* testimonial */}
     {/* contact */}
     {/* footer */}
   </div>
