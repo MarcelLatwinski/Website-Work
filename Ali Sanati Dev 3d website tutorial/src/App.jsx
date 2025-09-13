@@ -5,6 +5,8 @@ import About from "./sections/About";
 import Projects from "./sections/Projects";
 import Experiences from "./sections/Experiences";
 import Testimonial from "./sections/Testimonial";
+import Contact from "./sections/Contact";
+import Footer from "./sections/Footer";
 
 const App = () => { //Defines a function component - reusable building block of UI - written as an arrow function - modern shorthand for writing functions in javascript
   return (
@@ -15,9 +17,9 @@ const App = () => { //Defines a function component - reusable building block of 
     <Projects />
     <Experiences />
     <Testimonial />
+    <Contact />
+    <Footer />
     <section className="min-h-screen" />
-    {/* contact */}
-    {/* footer */}
   </div>
   );
 };
