@@ -19,7 +19,6 @@ const App = () => { //Defines a function component - reusable building block of 
     <Testimonial />
     <Contact />
     <Footer />
-    <section className="min-h-screen" />
   </div>
   );
 };
