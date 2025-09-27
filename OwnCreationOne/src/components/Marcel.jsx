@@ -30,6 +30,7 @@ function Letter({ mesh }) {
     <primitive
       ref={ref}
       object={mesh}
+      position={[0, 0, 1]}
       onPointerOver={(e) => {
         e.stopPropagation();
         setHovered(true);

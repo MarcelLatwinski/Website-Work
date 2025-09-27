@@ -16,6 +16,7 @@
     "framer-motion": "^12.23.21",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-responsive": "^10.0.1",
     "tailwindcss": "^4.1.13",
     "three": "^0.180.0"
   },
