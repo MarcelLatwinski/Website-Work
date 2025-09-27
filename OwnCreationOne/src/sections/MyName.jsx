@@ -1,31 +1,7 @@
 // src/sections/MyName.jsx
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Environment } from "@react-three/drei";
-import { useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
-
-import marcelUrl from "../Assets/MARCEL.glb";
-
-function NameModel() {
-  const { scene } = useGLTF(marcelUrl); // using public/ or assetsInclude
-  const ref = useRef();
-  const [hovered, setHovered] = useState(false);
-
-  // Rotate continuously
-  useFrame(() => {
-    ref.current.rotation.y += 0.01;
-  });
-
-  return (
-    <primitive
-      ref={ref}
-      object={scene}
-      scale={1}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    />
-  );
-}
+import Marcel from "../components/Marcel";
 
 export default function MyName() {
   return (
@@ -38,7 +14,7 @@ export default function MyName() {
         <pointLight position={[0, 3, 2]} intensity={0.8} /> {/* extra point glow */}
 
         {/* 3D Model */}
-        <NameModel />
+        <Marcel />
 
         {/* 🎮 OrbitControls without scroll zoom */}
         <OrbitControls enableZoom={false} /> 
