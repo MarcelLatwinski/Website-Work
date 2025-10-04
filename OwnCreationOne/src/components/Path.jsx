@@ -1,47 +1,64 @@
 import { useRef, useEffect, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 import path from "../Assets/Path.glb";
 
-const PathScene = () => {
+const Path = () => {
   const { scene } = useGLTF(path);
-  const cameraRef = useRef();
   const pathRef = useRef();
-  
-  const [scrollPos, setScrollPos] = useState(0);
+  const { camera, gl } = useThree(); // grab renderer (gl) to attach listeners
+  const [virtualScroll, setVirtualScroll] = useState(0);
+  const isHovered = useRef(false);
 
-  // Track scroll
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollPos(window.scrollY);
+    const canvas = gl.domElement;
+
+    const handleWheel = (e) => {
+      if (!isHovered.current) return; // only when hovering
+      e.preventDefault();
+      setVirtualScroll((prev) => Math.max(0, prev + e.deltaY));
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+    canvas.addEventListener("wheel", handleWheel, { passive: false });
+    return () => canvas.removeEventListener("wheel", handleWheel);
+  }, [gl]);
+
+  const SPEED = 0.002; // tweak this to adjust feel
 
   useFrame(() => {
-    if (!cameraRef.current || !pathRef.current) return;
+    if (!pathRef.current) return;
 
-    const normalized = (scrollPos % 5000) / 5000; // loop every 5000px
-    const pathLength = pathRef.current.children[0].geometry.boundingBox.max.x;
+    const mesh = pathRef.current.children[0];
+    if (mesh && mesh.geometry) {
+      if (!mesh.geometry.boundingBox) {
+        mesh.geometry.computeBoundingBox();
+      }
+      const bbox = mesh.geometry.boundingBox;
+      const pathLength = bbox.max.z - bbox.min.z; // assuming forward axis is Z
 
-    // Move camera along the path's X-axis
-    cameraRef.current.position.x = normalized * pathLength;
+      // translate scroll to distance
+      const distance = virtualScroll * SPEED;
 
-    // Optional: make the camera look slightly forward along the path
-    cameraRef.current.lookAt(
-      normalized * pathLength + 1,
-      cameraRef.current.position.y,
-      cameraRef.current.position.z
-    );
+      // wrap around smoothly
+      const normalized = distance % pathLength;
+
+      // move along Z
+      camera.position.set(1, 2, normalized);
+      camera.lookAt(1, 2, normalized);
+      //camera.rotation.y = Math.PI;
+    }
   });
 
+
   return (
-    <>
-      <primitive object={scene} ref={pathRef} />
-      <perspectiveCamera ref={cameraRef} position={[0, 2, 5]} />
-    </>
+    <primitive
+      object={scene}
+      ref={pathRef}
+      onPointerOver={() => (isHovered.current = true)}
+      onPointerOut={() => (isHovered.current = false)}
+    />
   );
 };
 
-export default PathScene;
+export default Path;
