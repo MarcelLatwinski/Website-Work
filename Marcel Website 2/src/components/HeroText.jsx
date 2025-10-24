@@ -2,7 +2,7 @@ import { FlipWords } from "./FlipWords";
 import { motion } from "motion/react";
 
 const HeroText = () => {
-  const words = ["Blender", "Figma", "Jsx", "Css", "Github"];
+  const words = ["Blender", "Figma", "Jsx", "Css", "Github", "Three Js"];
   const variants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0 },

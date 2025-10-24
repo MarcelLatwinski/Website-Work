@@ -10,7 +10,7 @@ const HeroTextMain = () => {
   };
 
   return (
-    <div className="z-10 mt-20 text-center md:mt-40 md:text-left rounded-3xl bg-clip-text">
+    <div className="z-10 mt-20 text-left md:mt-40 md:text-left rounded-3xl bg-clip-text">
       {/* Desktop View */}
       <div className="flex-col hidden md:flex c-space">
         <motion.h1
@@ -22,8 +22,8 @@ const HeroTextMain = () => {
         >
           Hi, I'm
         </motion.h1>
-        <div className="relative h-screen w-full bg-gray-800 flex items-center justify-center">
-          <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+        <div className="transform -translate-x-40 translate-y-10 h-90 w-[75rem]">
+          <Canvas camera={{ position: [0, 0, 7], fov: 11 }} className="!overflow-visible h-full">
             {/* 🌟 Lighting setup */}
             <ambientLight intensity={0.4} /> {/* soft base light */}
             <directionalLight
@@ -39,8 +39,8 @@ const HeroTextMain = () => {
             <Marcel />
             <Environment preset="studio" />
           </Canvas>
+          </div>
         </div>
-      </div>
       {/* Mobile View */}
       <div className="flex- flex-col space-y-6 md:hidden">
         <motion.p

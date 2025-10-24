@@ -53,10 +53,10 @@ export default function Marcel() {
   });
 
   return (
-    <>
+     <group position={[0, -0.2, 0]} scale={[1,1,1]}>
       {meshes.map((mesh, i) => (
         <Letter key={i} mesh={mesh} />
       ))}
-    </>
+      </group>
   );
 }
