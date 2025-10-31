@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
 @import "tailwindcss";
 @theme {
   --color-primary: #222831;
@@ -49,7 +51,7 @@
 }
 body {
   background: #1B263B;
-  font-family: "Funnel Display", sans-serif;
+  font-family: 'Inter', sans-serif;
   color: white;
   scroll-behavior: smooth;
   overflow-x: hidden;

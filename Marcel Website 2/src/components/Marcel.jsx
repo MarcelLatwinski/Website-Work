@@ -47,10 +47,14 @@ export default function Marcel() {
   // Collect all meshes from the GLB
   const meshes = [];
   scene.traverse((child) => {
-    if (child.isMesh) {
-      meshes.push(child.clone()); // clone so each mesh can be animated independently
-    }
-  });
+  if (child.isMesh) {
+    const clone = child.clone();
+    // Set a new color (e.g., purple)
+    clone.material = clone.material.clone(); // ensure we don't modify original
+    clone.material.color = new THREE.Color("#F2EFFF"); 
+    meshes.push(clone);
+  }
+});
 
   return (
      <group position={[0, -0.2, 0]} scale={[1,1,1]}>

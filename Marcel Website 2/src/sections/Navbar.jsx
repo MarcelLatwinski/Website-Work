@@ -23,6 +23,11 @@ function Navigation() {
         </a>
       </li>
       <li className="nav-li">
+        <a href="#projects" className="nav-link">
+          Projects
+        </a>
+      </li>
+      <li className="nav-li">
         <a href="#contact" className="nav-link">
           Contact
         </a>
@@ -72,15 +77,15 @@ const Navbar = () => {
         <div className="relative flex items-center justify-between py-4 sm:py-2">
           <a
             href="/"
-            className=" z-100 px-6 py-1.5 rounded-full text-[#E0E0FF] font-bold bg-[#4EE1FF]/10 border border-[#4EE1FF]/40 shadow-[0_0_10px_#4EE1FF] transition-all duration-300 hover:bg-[#4EE1FF]/30 hover:text-[#0B0C1F] hover:shadow-[0_0_20px_#4EE1FF] mt-1 text-[1.2rem]"
+            className="font-sans z-100 px-4 py-1 rounded-full text-[#E0E0FF] font-bold bg-[#2E1A47] border-2 border-[#ffffff]/50 shadow-[0_0_12px_#c84bff] transition-all duration-300 hover:bg-[#9b4dff]/30 hover:text-[#ffffff] hover:shadow-[0_0_25px_#9b4dff] mt-0.5 text-[1.4rem] tracking-wider relative -translate-y-0.5"
           >
-            Marcel
+            MARCEL
           </a>
 
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex cursor-pointer text-[#E0E0FF] hover:text-[#4EE1FF] focus:outline-none sm:hidden"
+            className="flex cursor-pointer text-[#E0E0FF] hover:text-[#d64eff] focus:outline-none sm:hidden"
           >
             <img
               src={isOpen ? "/assets/close.svg" : "/assets/menu.svg"}
